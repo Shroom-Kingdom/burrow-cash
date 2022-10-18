@@ -3,7 +3,6 @@ import type { WalletSelector } from "@near-wallet-selector/core";
 import { setupNearWallet } from "@near-wallet-selector/near-wallet";
 import { setupSender } from "@near-wallet-selector/sender";
 import { setupHereWallet } from "@near-wallet-selector/here-wallet";
-import { setupWalletConnect } from "@near-wallet-selector/wallet-connect";
 import { setupModal } from "@near-wallet-selector/modal-ui";
 import type { WalletSelectorModal } from "@near-wallet-selector/modal-ui";
 import { Near } from "near-api-js/lib/near";
@@ -12,7 +11,7 @@ import { BrowserLocalStorageKeyStore } from "near-api-js/lib/key_stores";
 import BN from "bn.js";
 import { map, distinctUntilChanged } from "rxjs";
 
-import getConfig, { defaultNetwork, LOGIC_CONTRACT_NAME, WALLET_CONNECT_ID } from "./config";
+import getConfig, { defaultNetwork, LOGIC_CONTRACT_NAME } from "./config";
 import { isTestnet } from ".";
 
 declare global {
@@ -43,23 +42,12 @@ let accountId: string;
 let init = false;
 let selector: WalletSelector | null = null;
 
-const walletConnect = setupWalletConnect({
-  projectId: WALLET_CONNECT_ID,
-  metadata: {
-    name: "Burrow Cash",
-    description: "Burrow with NEAR Wallet Selector",
-    url: "https://github.com/near/wallet-selector",
-    icons: ["https://avatars.githubusercontent.com/u/37784886"],
-  },
-  chainId: `near:${defaultNetwork}`,
-});
-
 export const getWalletSelector = async ({ onAccountChange }: GetWalletSelectorArgs) => {
   if (init) return selector;
   init = true;
 
   selector = await setupWalletSelector({
-    modules: [setupNearWallet(), setupSender(), walletConnect, setupHereWallet()],
+    modules: [setupNearWallet(), setupSender(), setupHereWallet()],
     network: defaultNetwork,
     debug: !!isTestnet,
   });

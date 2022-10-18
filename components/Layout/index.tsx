@@ -8,12 +8,11 @@ import Footer from "../Footer";
 import Header from "../Header";
 import Ticker from "../Ticker";
 import Blocked from "../Blocked";
-import { useBlocked } from "../../hooks/useBlocked";
 
 const Layout = ({ children }) => {
   const isViewingAs = useViewAs();
   const { hasTicker } = useTicker();
-  const isBlocked = useBlocked();
+  const isBlocked = false;
 
   return (
     <Box
